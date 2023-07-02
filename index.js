@@ -1,4 +1,15 @@
+const { program } = require("commander");
 const contacts = require("./contacts");
+
+program
+  .option("-a, --action, <type>")
+  .option("-i, --id, <type>")
+  .option("-n, --name, <type>")
+  .option("-e, --email, <type>")
+  .option("-p, --phone, <type>");
+
+program.parse();
+const options = program.opts();
 
 const invokeAction = async ({ action, id, name, email, phone }) => {
   switch (action) {
@@ -7,7 +18,7 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
       console.log(allContacts);
       break;
 
-    case "getById":
+    case "get":
       const oneContact = await contacts.getContactById(id);
       console.log(oneContact);
       break;
@@ -27,12 +38,4 @@ const invokeAction = async ({ action, id, name, email, phone }) => {
   }
 };
 
-// invokeAction({ action: "list" });
-// invokeAction({ action: "getById", id: "qdggE76Jtbfd9eWJHrssH" });
-invokeAction({
-  action: "add",
-  name: "Alla Raymond",
-  email: "alla.ante@vestibul.co.uk",
-  phone: "(044) 914-3792",
-});
-invokeAction({ action: "remove", id: "qdggE76Jtbfd9eWJHrssH" });
+invokeAction(options);
